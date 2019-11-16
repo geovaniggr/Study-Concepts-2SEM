@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>USP-2ºSEM</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <aside>
+        <nav role="navigation">
+            <ul class="menu">
+                <li><a href="#hashing">Introdução</a></li>
+                <li><a href="#hashing">Complexidade Assintótica</a></li>
+                <li><a href="#hashing">Algoritmos de Ordenação</a></li>
+                <li><a href="#hashing">HeapSort</a></li>
+                <li><a href="#hashing">MergeSort</a></li>
+                <li><a href="#hashing">Cota Inferior</a></li>
+                <li><a href="#hashing">Algoritmos de Contagem</a></li>
+                <li><a href="#hashing">Counting Sort</a></li>
+                <li><a href="#hashing">Radix Sort</a></li>
+                <li><a href="#hashing">Hashing</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <article>
+        <section class="introducao">
+            <h1> Introdução </h1>
+            <p>
+                Para essa revisão iremos adotar o conteúdo para a segunda avaliação
+                de Introdução à Análise de Algoritmos. Os tópicos para a prova são:
+            </p>
+            <ul>
+                <li> Algoritmos de Ordenação </li>
+                <li> Cota Inferior para Algoritmos de Ordenação</li>
+                <li> Hashing e Endereçamento Aberto</li>
+            </ul>
+            <span> O conteúdo desse site está relacionado com o livro
+                <i> Projeto de Algoritmos com Implementações em Java em C++</i> do Zivani e as notas de aula da matéria</span>
+        </section>
+        <section class="complexidadeAssintotica">
+            <h1>Complexidade Assintótica</h1>
+            <p>
+                Antes de começar a abordar os algoritmos de ordenação é necessário
+                relembrar a definição assintotica de algoritmos, para isso seja 2 funções
+                f(n) e g(n):
+                <ul>
+                    <li> f(n) \(\in O(g(n)) \) se g(n) cresce mais rapidamente que f(n), g(n) domina assintóticamente</li>
+                    <li> f(n) \(\in \Omega(g(n)) \) se g(n) cresce mais lentamente que f(n), f(n) domina assintóticamente</li>
+                    <li> f(n) \(\in \Theta(g(n)) \) se f(n) cresce tão rapidamente quanto f(n).</li>
+                </ul>
+            </p>
+            <p> 
+                Para nos auxiliar podemos utilizar a definição de limites para observar com mais facilidade:
+                <ul>
+                    <li>
+                        f(n) \( \in O(g(n)) \) se \( \lim_{n \to \infty} (\frac{ f(n) } { g(n)} ) < \infty\)
+                    </li>
+                    <li>
+                        f(n) \( \in \Omega(g(n)) \) se \( \lim_{n \to \infty} (\frac{ f(n) } { g(n)} ) > 0\)
+                    </li>
+                    <li>
+                        f(n) \( \in \Theta(g(n)) \) se \( 0 < \lim_{n \to \infty} (\frac{ f(n) } { g(n)} ) < \infty\)
+                    </li>
+                </ul>
+            </p>
+        </section>
+        <section class="algoritmosOrdenacao">
+            <h1>Algoritmos de Ordenação</h1>
+            <p>Para abordar os algortimos de ordenação é necessário ter em mente que existem diversos tipos 
+                com complexidades assintóticas diferentes.<br>
+                Tipicamente temos os seguintes algoritmos de ordem quadrática, isto é, \(\in O(n^2) \): 
+                <ul>
+                    <li>Insertion Sort</li>
+                    <li>Bubble Sort</li>
+                    <li>Selection Sort</li>
+                </ul>
+                Entretanto existem algortimos mais eficientes \(\in \theta(n*log(n))\), são eles:.
+                <ul>
+                    <li>MergeSort</li>
+                    <li>QuickSort</li>
+                    <li>HeapSort</li>
+                </ul>
+                <span> <a href="https://geovaniggr.github.io/SortingAlgorithm"> Comparação entre Bubble e Quicksort está presente aqui.</a></span>
+            </p>
+            <span> Iremos precisar também de duas definições importantes para abordar as caracterisitcas dos algoritmos </span>
+            <h2> Algoritmos Estáveis</h2>
+            <p>
+                Quando houver empate na ordenção (elementos repetidos) o algoritmo será considerado <strong>estável</strong> 
+                se manter a ordem inicial desses elementos no array, caso contrário é um algortimo <strong>instável</strong>
+            </p>
+            <h2> Algoritmos Inplace</h2>
+            <p>
+                São algoritmos que não utilizam estruturas auxiliares para fazer a ordenação, isto é,
+                toda ordenação é feita no array original; 
+            </p>
+        </section>
+        <section class="heapSort">
+            <h1>HeapSort</h1>
+            <p>Segundo Zivani (2016) possui o mesmo princípio de funcionamento do ordenamento por seleção, e utiliza como estrutura
+                uma árvore binária.
+            </p>
+            <p>Ele seleciona o menor item do array e troca de posição com o primeiro, após isso são feitas comparações
+                para que o elemento fique na posição correta da árvore, para realizar essa operação, é utilizado a função
+                refazHeap, que tem por objetivo comparar o elemento com seu filho à direita e à esquerda.
+            </p>
+            <p>
+                Existem alguns conceitos importantes em relaçao ao Heap:
+                <ul>
+                    <li> Pode ser heap <strong>máximo:</strong> A raiz é o maior elemento do array</li>
+                    <li> Pode ser heap <strong>minimo</strong>: A raiz é o menor elemento do array</li>
+                    <li> Tipicamente se comporta como um árvore com o lado esquerdo completo</li>
+                </ul>
+            </p>
+            <strong>Código do HeapSort em Java:</strong>
+            <span>
+                <pre>
+                    static void refazHeapMax( int [] A, int i, int compHeap) {
+                        int esq, dir, maior, temp;
+                        
+                        esq = 2 * i + 1;
+                        dir = 2 * i + 2;
+
+                        if( esq < compHeap && A[esq] > A[i]) {
+                            maior = esq;
+                        }
+                        else {
+                            maior = i;
+                        }   
+                        if( dir < compHeap && A[dir] > A[maior]) {
+                            maior = dir;
+                        }
+
+                        if( maior != i) {
+                            temp = A[i];
+                            A[i] = A[maior];
+                            A[maior] = temp;
+
+                            refazHeapMax(A, maior, compHeap);
+                        }
+                    }
+
+                    static void constroiHeapMax( int[] A, int i) {
+                        int tamanho = A.length;
+                        if( i < tamanho / 2) {
+                            constroiHeapMax(A, 2*i + 1);
+                            constroiHeapMax(A, 2*i + 2);
+                            refazHeapMax(A, i, n);
+                        }
+                    }
+
+                    public void ordena(int [] Array) {
+                        int i, compHeap, temp;
+                        compHeap = Array.lenght;
+                        constroiHeapMax(A, 0);
+
+                        for(i = A.length - 1; i > 0; --i) {
+                            temp = A[0];
+                            A[0] = A[i];
+                            A[i] = temp;
+
+                            compHeap--
+                            refazHeapMax(A, 0, compHeap);
+                        }
+                    }
+                </pre>
+            </span>
+            <p> O procedimento de refazer o heap \(\in O(log(n)) \), 
+                para um conjunto de N elementos temos que: \(\in O( n * log(n) )\) 
+            </p>
+            <p>
+                <strong>Vantagens e Desvantagens</strong>
+                <ul>
+                    <li> O algoritmo é bastante complexo de se implementar</li>
+                    <li> O comportamento do Heapsort é sempre \( \in O(nlogn)\) não importa a entrada</li>
+                    <li> O heapsort não é <strong>estável</strong></li>
+                </ul>
+            </p>
+        </section>
+        <section class="mergeSort">
+            <h1> MergeSort </h1>
+            <p>
+                Esse algoritmo tem como característica quebrar o array principal em 2 que serão ordenados
+                recursivamente, que é efetuado pela função mergesort, e depois unir as partes com a função
+                merge.
+            </p>
+            <strong> Código do MergeSort em Java</strong>
+            <span>
+                <pre>
+                        static void mergesort(int [] arr) {
+                            int tamanho = arr.length;
+                            if (tamanho < 2)
+                                return;
+                            int meio = tamanho / 2;
+                            int [] esquerda = new int[meio];
+                            int [] direita = new int[tamanho - meio];
+                            for (int i = 0; i < meio; i++)
+                                esquerda[i] = arr[i];
+                            for (int i = meio; i < tamanho; i++)
+                                direita[i - meio] = arr[i];
+                            mergesort(esquerda);
+                            mergesort(direita);
+                            merge(arr, esquerda, direita);
+                        }
+                    
+                        public static void merge(int arr[], int esquerda[], int direita[]) {
+                            int tamanhoEsquerda = esquerda.length;
+                            int tamanhoDireita = direita.length;
+                            int i = 0, j = 0, k = 0;
+                            while (i < tamanhoEsquerda && j < tamanhoDireita) {
+                                if ( esquerda[i] <= direita[j]) {
+                                    arr[k] = esqueda[i];
+                                    i++;
+                                } else {
+                                    arr[k] = direita[i];
+                                    j++;
+                                }
+                                k++;
+                            }
+                            while (i < tamanhoEsquerda) {
+                                arr[k] = esquerda[i];
+                                i++;
+                                k++;
+                            }
+                            while (j < tamanhoDireita) {
+                                arr[k] = direita[j];
+                                j++;
+                                k++;
+                            }
+                        }
+                </pre>
+            </span>
+            <p>
+                <strong> Vantagens e Desvantagens</strong>
+                <ul>
+                    <li> O pior caso \(\in O(n * logn)\)</li>
+                    <li> A ordenação é <strong>estável</strong></li>
+                    <li> O consumo de espaço é relativamente alto</li>
+                </ul>
+            </p>
+        </section>
+        <section id="cotaInferior">
+            <h1>Cota Inferior para Algoritmos de Ordenação</h1>
+        <p> Está relacionado com algoritmos de ordenação por comparação, temos que a <strong>cota superior</strong> dos algoritmos
+            de ordenação é \(\in O(n * logn)\) como visto pelo MergeSort e HeapSort, entretanto é necessário observar se é possível ser mais eficiente
+            utilizando comparações.<br>
+            Para isso é necessário recorrer a uma árvore binária de decisão, onde cada nó interno representa uma comparação feita pelo algoritmo, tipicamente
+            cada nó possui duas subárvores (verdadeiro ou falso) para a comparação, e as folhas são as respostas possíveis do algoritmo após a decisão tomada
+            ao longo do caminho
+        </p>
+        <p> Para qualquer algoritmo de ordenação, uma árvore de decisão deve ter pelo menos <strong>n!</strong> folhas, e a altura minima representa
+             o número mínimo de comparações que o melhor algoritmo de ordenação baseado em comparações deve efetuar.
+        </p>
+        <p>Por fim sabemos que uma árvore binária com altura "h" tem no máximo \(2^h\) folhas, portanto n! \(\le \: 2^h \) \(\rightarrow h \ge \log_2{n!} \)</p>
+        <p>Para calcular o valor de: <strong>\(log_2 n!\)</strong> vamos recorrer a Aproximação de Stirling que tem como objetivo aproximar o fatorial de um número</p>
+        <h2>Aproximação de Stirling</h2>
+        <span> <strong>n! \(\cong \) </strong>\( \sqrt{2\pi n} \: (\frac n e)^n  \)  </span>
+        <p>
+            Tomando o log de ambos os lados temos que:
+            <p> \(log (n!)\) ~ \(\log({ \sqrt{2\pi n} \: (\frac n e) ^ n })\)</p>
+            <p> Manipulando algebricamente a segunda parte da equação:</p>
+            <p> \( \log({ \sqrt{2 \pi n}}) + \: \log({ (\frac n e)^n}) \) </p>
+            <p>\( \log({ \sqrt{2 \pi n}}) + \: n * \log({ (\frac n e)}) \) </p>
+            <p>\( \log({ \sqrt{2 \pi n}}) + \: n * [ \: \log(n) - \log(e) \: ] \) </p>
+            <p>\( \log({ \sqrt{2 \pi n}}) + \: n * [ \: \log(n) - \log(e) \: ] \) </p>
+            <p>\( \log({ \sqrt{2 \pi n}}) + \: n * \log(n) - n * \log(e) \)</p>
+            <p>\( \log({ \sqrt{2 \pi n}}) + \: n * \log(n) - n  \)</p>
+            <span> Como estamos interessados no comportamento assintótico, a parte n * \(log(n)\) domina a equação</span>
+            <p> Podemos concluir então que: \(log (n!) \) \(\cong \) \( n * log n\)
+                e essa será a cota inferior para os algoritmos de ordenação, isto é, para ordernar um array de "n" elementos
+                será utilizado no minimo: \( \Omega(n * logn)\) comparações no pior caso.
+            </p>
+        </p>
+        </section>
+        <section class="algoritmosContagem">
+            <h1>Algoritmos de Contagem</h1>
+            <p> 
+                Uma maneira mais eficiente porém não tão intuitiva de ordernar elementos é contando seus símbolos,
+                os chamados algortimos de contagem, iremos abordar o <strong>Counting Sort</strong> e o <strong>Radix Sort</strong>
+            </p>
+            <h2>Counting Sort</h2>
+            <p>
+                Esse algoritmo tem como característica ordernar elementos, de preferência pequenos, onde utiliza 2 arrays auxiliares,
+                fazendo a seguinte operação:<br>
+                <span> Seja X: Array Original, A: Array Auxiliar e F: Array Final</span>
+                <ul>
+                    <li> O array auxiliar deve ter o tamanho do maior simbolo</li>
+                    <li>Pegue o valor do elemento i do Array X e acrescente 1 na posição A[i]</li>
+                    <li>Repita esse procedimento \(\forall i = 0 \),..., Tamanho do Array</li>
+                    <li>No array A, some os pares de posição, isto é, A[1] = A[0] + A[1]; A[2] = A[1] + A[2], ..., A[i] = A[i-1] + A[i]</li>
+                    <li>Pegue o valor da última posição do Array Original (i), vá na posição A[i] diminua em 1 e coloque no Array Final na posição F[i-1]</li>
+                </ul>
+            </p>
+            <p>
+                <strong>Vantagens e Desvantagens</strong>
+                <ul>
+                    <li> O counting sort tem complexidade \(\in O(n)\)</li>
+                    <li> É um algoritmo <strong>estável</strong></li>
+                    <li> Utiliza 2 arrays auxiliares, aumentando o custo de memória</li>
+                    <li> Ordenar valores grandes (inteiros) pode se tornar um problema, exemplo: criar um array com 
+                        posição 100.000;
+                    </li>
+                    <li> Ordenar valores negativos não é trivial </li>
+                </ul>
+            </p>
+            <span> Existe como ser eficiente e não utilizar tanta memória? </span>
+            <h2> Radix Sort</h2>
+            <p> 
+                Esse algoritmo tem como estratégia ordenar valores, no nosso caso, inteiros,            digito a digito,
+                para isso existe um ponto importante: <strong>começar a ordenação pelo digito menor significativo</strong>
+                ,isto é, o último.
+            </br>
+                Para que o Radix sort seja eficiente é necessário ter um método estável de ordenção e eficiente,
+                como por exemplo, o Counting Sort, e no caso sabemos que o maior valor estará entre 1 e 10, ou seja,
+                os vetores auxiliares criados pelo algoritmo não ocuparão muita memória.
+            </p>
+            <span> Como funciona o Radix Sort ?</span>
+            <p>A forma de ordenação é bem simples, (seja A um array e d o número máximo de digitos):
+                <ul>
+                    <li> De i = 1 até d: Ordene o Array pelo i-ésimo digito utilizando um método <strong>estavel</strong></li>
+                </ul>
+                Portanto a complexidade assintótica será dada principalmente pelo algoritmo utilizado em conjunto
+                ao RadixSort, tomando como exemplo o Counting Sort teremos que \(\in O(d * n) \), porém como d é uma constante
+                podemos generalizar e dizer que \(\in O(n) \)
+            </p>
+            
+        </section>
+        
+        <section id="hashing">
+            <h1>Hashing</h1>
+            <p>Porém existem formas mais rápidas de ordernar vetores, e para isso, 
+                não será utilizado comparações entre elementos
+            </p>
+        </section>
+    </article>
+</body>
+</html>
