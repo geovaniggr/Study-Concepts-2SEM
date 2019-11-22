@@ -327,8 +327,55 @@
         </section>
         <section id="hashing">
             <h1>Hashing</h1>
-            <p>Porém existem formas mais rápidas de ordernar vetores, e para isso, 
-                não será utilizado comparações entre elementos
+            <p>
+                Hashing é uma estrutura de dados que busca fazer a inserção, busca e remoção em tempo constante, para
+                isso a estratégia é pegar a chave e passar por uma <strong>função de hashing</strong> para gerar uma 
+                posição especifica na memória.
+            </p>
+            <p>
+                Quando falamos de hashing devemos ter em mente o conceito de <strong>colisão</strong>, isto é, quando
+                tentamos inserir um valor em uma posiçaõ da memória, a qual, já está sendo utilizado, então é necessário
+                procurar uma posição, temos 2 estratégias que funcionam bem:
+                <ul>
+                    <li> Sondagem Linear</li>
+                    <li> Sondagem Quadrática</li>
+                </ul>
+                E para evitar colisões antes que aconteçam:
+                <ul>
+                    <li> Double Hashing </li>
+                    <li> Mapeamento Universal </li>
+                </ul>
+            </p>
+            <p> 
+                Existem diversas funções que podem ser candidatas a função de hashing, a mais intuitiva, e menos
+                eficiente é o <strong>método da divisão</strong>, que tem como expressão, sendo h uma função de hashing:
+            </p>
+            <span> h(chave) = chave % m</span>
+            <p> 
+                A questão é que quando trabalhamos com hashing devemos pensar em uma divisão uniformemente distribuida
+                pois caso utilize uma lista ligada, teremos listas com aproximadamente "n" elementos em quanto
+                outras terão poucos elementos, e para procurar os valores que constituem a moda da série
+                ainda teremos \(\in O(n)\).
+            </p>
+            <p> 
+                Uma forma menos intuitiva e que constitui uma outra função de hashing é o <strong>método da multiplicação</strong>,
+                que gera distribuições mais uniformes, que tem como expressão.
+            </p>
+            <span> h(chave) = \(\lfloor m * (k*c - \lfloor k*c \rfloor ) \rfloor \) para 0 < c < 1</span>
+            <h2>Mapeamento Universal</h2>
+            <p> 
+                Surge com a razão de não atrapalhar distribuições, pois parte da premissa de que caso um 
+                invasor identifique sua chave de hashing ele possa fazer inserções com objetivo de causar colisões, a 
+                solução então é ter um conjunto de funções de hashing para se previnir.
+            </p>
+            <h2> Complexidade Assintótica </h2>
+            <p> Seja o fator de carga (comprimento médio da lista) dado por \(\alpha = \frac n m \), temos que a 
+                busca:
+                <ul>
+                    <li> <strong>Sem Sucesso:</strong> \(\in O( 1 + \alpha) \)</li>
+                    <li> <strong>Com Sucesso:</strong> \(\in O( 1 + (\frac 1 n)  * (\frac 1 m) * n^2) = O(1 + \alpha) \)</li>
+                </ul>
+                Caso tenhamos um valor de \(\alpha \) pequeno, isto é, uma boa função de hashing.
             </p>
         </section>
     </article>
